@@ -1,0 +1,47 @@
+version: "3.8"
+services:
+  api-gateway:
+    build: ./api-gateway
+    deploy:
+      replicas: 2
+
+  authentication:
+    build: ./authentication
+  
+  accounts:
+    build: ./accounts
+  
+  bills:
+    build: ./bills
+  
+  notification:
+    build: ./notification
+  
+  transaction:
+    build: ./transaction
+  
+  support:
+    build: ./support
+  
+  portal-ui:
+    build: ./portal
+
+  redis:
+    image: redis
+    ports:
+     - "6379:6379"
+    volumes:
+      - ~/data/redis:/data
+    entrypoint: redis-server --appendonly yes
+    restart: always
+  
+  postgres-db:
+    image: postgres:latest
+    ports:
+     -"5433:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_USER: admin
+    volumes:
+       - ~/db-data:/var/lib/postgres/data
